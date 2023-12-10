@@ -16,9 +16,6 @@ from myinky import SurfaceToInky
 
 from mynest import Nest
 
-
-
-
 # fix UTC times
 # set NEST value as appropriate
 # - if current heating block differs from past heating block,
