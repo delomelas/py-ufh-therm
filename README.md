@@ -20,6 +20,7 @@ Before going too far - note that this is not something I expect other people to 
 * Low-ish power usage - using a low-powered Pi and e-ink screen
 * Fail-safe - this project interfaces with the existing Nest thermostat rather than being wired directly into the boiler. This means a) there's a fail-safe - the Nest will take over again should this system fail and b) no need to wire new relays etc into the boiler to control the zone valves.
 * Optimising - Should use the minimum of heat to keep the house above the target temperature. Uses a simple algorithm to plan the next 12h heating, taking into account the natural heat-loss of the building and compensating for the outdoor temperature.
+* Local-only - no need for remote control or an app - it takes hours to warm up the house, so better to design a system that keeps a temperature constant and comfortable
 
 # Construction
 ## Hardware
