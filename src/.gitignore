@@ -1,1 +1,7 @@
 
+/nest.conf
+/.cache.sqlite
+/heatingplan
+/image.bmp
+/sensors
+/weather
