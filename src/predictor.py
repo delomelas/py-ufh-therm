@@ -1,5 +1,6 @@
 from blockcalc import BlockCalc
 
+
 class Predictor:
     def __init__(self, weather, currentTemp):
         self.weather = weather
@@ -23,11 +24,11 @@ class Predictor:
             # simple temperature gradient
             # todo: add windchill and effect of solar gains?
             newTemp = (forecastTemp - prevTemp) / 250 + prevTemp
-            
+
             # add the underfloor heating to this block
             newTemp = heating.ApplyHeatingForBlock(block, newTemp)
 
             predictedTemps[block] = newTemp
-            prevTemp = newTemp        
-        
+            prevTemp = newTemp
+
         return predictedTemps

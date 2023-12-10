@@ -1,13 +1,12 @@
 import shelve
-import time
 
 
 # Stores both a record of prior hearing and a plan for future heating
 # Can estimate the impact of this heating on the temperature at
 # a point in the future
 
-class Heating:
 
+class Heating:
     dbname = "heatingplan"
 
     heat = {}
@@ -23,21 +22,20 @@ class Heating:
     def Load(self):
         with shelve.open(self.dbname) as db:
             for k in db:
-               self.heat[eval(k)] = db[k]
+                self.heat[int(k)] = db[k]
 
     def Clone(self):
-        newHeating = Heating()        
+        newHeating = Heating()
         newHeating.heat = self.heat.copy()
         return newHeating
 
-    def GetPlannedHeating(self, block):      
-        if (block in self.heat):
-            return self.heat[block];
-        return False;
-
+    def GetPlannedHeating(self, block):
+        if block in self.heat:
+            return self.heat[block]
+        return False
 
     def PutPlannedHeating(self, block, heatbool):
-        self.heat[block] = heatbool;
+        self.heat[block] = heatbool
 
     # what's the tempterature gain in a certin block due to prior
     # heating?
@@ -64,7 +62,7 @@ class Heating:
 
         if self.GetPlannedHeating(block - 8):
             temp = temp + 0.03
-            
+
         if self.GetPlannedHeating(block - 7):
             temp = temp + 0.04
 
@@ -81,6 +79,3 @@ class Heating:
             temp = temp + 0.01
 
         return temp
-
-    
-
