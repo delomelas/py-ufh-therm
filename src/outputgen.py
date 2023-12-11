@@ -3,6 +3,7 @@ import math
 
 import pygame
 from block import GetBlockStartTime
+from predictor import Predictor
 
 
 
@@ -248,6 +249,21 @@ class OutputGen:
             x2, y2 = self.ChartCoord(b + 1, futureTemps[b + 1], minTemp, maxTemp)
             offset = self.DotLine(surface, (x, y), (x2, y2), black, offset)
 
+
+        testPredictions = False
+        if testPredictions:
+            for i in range(nowBlock - 12*4, nowBlock, 4*3):
+                startBlock = i
+                startTemp = self.sensors.GetTempAtTime(GetBlockStartTime(i))
+                myPred = Predictor(self.weather, startTemp)
+                ft = myPred.PredictFutureTemps(GetBlockStartTime(i), self.heating, self.blockMax + 1)
+                # draw a dotted line in the future with the predicted internal temp
+                offset = 0
+                for b in range(startBlock, self.blockMax):
+                    x, y = self.ChartCoord(b, ft[b], minTemp, maxTemp)
+                    x2, y2 = self.ChartCoord(b + 1, ft[b + 1], minTemp, maxTemp)
+                    offset = self.DotLine(surface, (x, y), (x2, y2), black, offset)
+
         # draw a solid line with the prior temperatures
         for b in range(self.blockMin, nowBlock):
             x, y = self.ChartCoord(
@@ -318,15 +334,17 @@ class OutputGen:
             self.StatusText(surface, (3, 285), smallfont, "X Nest", red)
 
         count = 0
-        for block in range(nowBlock - 12 * 4, nowBlock):
+        for block in range(nowBlock - 24 * 4, nowBlock):
             if self.heating.GetPlannedHeating(block) is True:
                 count = count + 1
         h = (count * 15) / 60
+        hourstr = str(dt.timedelta(hours=h)).rsplit(':', 1)[0]
+        hourstr = hourstr.replace(":","h")
         self.StatusText(
             surface,
-            (275, 285),
+            (270, 285),
             smallfont,
-            "Last 24h heat: " + "{:2.1f}".format(h) + "h",
+            "Last 24h heat: " +hourstr + "m",
             black,
         )
 

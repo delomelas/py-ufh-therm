@@ -16,13 +16,6 @@ from myinky import SurfaceToInky
 
 from mynest import Nest
 
-# fix UTC times
-# set NEST value as appropriate
-# - if current heating block differs from past heating block,
-# - attempt to conact the nest and set the temp
-# - if we want the heating on, set the target temp to 22
-# - if we want the heating off, set the target temp to 12
-
 minBlock = None
 maxBlock = None
 
@@ -93,7 +86,6 @@ if plan.GetPlannedHeating(nowBlock) is True:
 else:
     print("Switching heating off.")
     nest.setNestTargetTemp(12)
-
 
 # all done, output to the status screen
 
