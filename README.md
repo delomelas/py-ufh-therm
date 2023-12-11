@@ -58,9 +58,9 @@ The display indicates:
   * Dotted line in the futre; predicted temperature
   * Red line; target temperature
   * Red Bars - times when the heating is on
-  * Status area in the bottom left, which confirms successful link with the weather API, Nest API and Sensors.
-  * On/Off indicator bottom-middle, at-a-glance view of if the boiler is on or off at the moment
-  * Total heating time over the last 24h, so I can marvel in how efficient it is
+* Status area in the bottom left, which confirms successful link with the weather API, Nest API and Sensors.
+* On/Off indicator bottom-middle, at-a-glance view of if the boiler is on or off at the moment
+* Total heating time over the last 24h, so I can marvel in how efficient it is
 
 ![Thermostat chart](images/display.png?raw=true "Detail view of the output screen")
 
