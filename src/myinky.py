@@ -17,7 +17,7 @@ def SurfaceToInky(surface):
     WIDTH = inky_display.width
     HEIGHT = inky_display.height
 
-    # Draw our surface onto a PIL image and convert the colours accordingly
+    # Draw our surface onto a PIL image and convert the colours accordingly *
     img = Image.new("P", (WIDTH, HEIGHT))
     ImageDraw.Draw(img)
     pil_string_image = pygame.image.tostring(surface, "RGBA", False)
