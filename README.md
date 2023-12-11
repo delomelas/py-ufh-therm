@@ -45,6 +45,7 @@ Low-quality code beware! Here be dragons, etc. This is my first attempt at Pytho
 Time is split into 15 minute "blocks" - to represent the minimum amount of time it's sensible to run the boiler for.
 ### Heat loss
 Temperature gradient - (indoor temp at t1) = (outdoor temp at t0 - indoor temp at t0) / (heat loss factor) + indoor temp at t0
+
 i.e, given no other inputs, temperature will trend towards the outside temperature
 
 ### Heat plan generation Psuedocode
