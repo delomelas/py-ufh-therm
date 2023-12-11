@@ -25,7 +25,7 @@ Before going too far - note that this is not something I expect other people to 
 # Construction
 ## Hardware
 * Raspberry Pi Zero W - because I had a spare one from years ago
-* InkyWHAT 4 inch e-ink sceen - a low-power display option to show staus - black/white/red only, 400x300 resolution
+* InkyWHAT 4 inch e-ink sceen - a low-power display option to show information - black/white/red only, 400x300 resolution
 * BME280 temperature sensor - cheap and just about accurate enough - it attaches nicely into the breakout pins on the InkyWHAT
 * 3d-printed case - to make sure it looks like a real thing and not a mess of PCBs and breadboards in the corner of the room
 
@@ -48,7 +48,7 @@ Low-quality code beware! Here be dragons, etc.
 * main.py - contains target temperatures for each day
 
 ## Display
-I wanted something functional yet elegant - spent a bit of time layout out the information on paper first to decide what goes where on the display. Had thoughts about including extra information - more detailed weather forecast? pull in the cost from the Smert Meter? Maybe later, but better to leave it relatively uncluttered for now.
+I wanted something functional yet elegant - spent a bit of time laying out the information on paper first to decide what goes where on the display. Had thoughts about including extra information - more detailed weather forecast? pull in the cost from the Smert Meter? Maybe later, but better to leave it relatively uncluttered for now.
 The display indicates:
 * Current indoor temperature
 * Current outdoor temperature
