@@ -32,7 +32,7 @@ Before going too far - note that this is not something I expect other people to 
 ![BME280, InkyWHAT screen an Pi Zero W](images/hardware.jpg?raw=true "All the required hardware")
 
 ## Software
-Low-quality code beware! Here be dragons, etc.
+Low-quality code beware! Here be dragons, etc. This is my first attempt at Python, I accept that it doesn't look very "pythonic" - my coding style is a bit of a mix of Java and K&R C and Basic all mushed together.
 * main.py - entry point. Designed to run as cron-job once every 15 minutes - collects all data, plans the next 12h of heating, switches on or off the boiler, then exits
 * predictor.py - divides the day into 15 minute blocks, predicting the temperature drop for the next 12h. Assume a simple temperature-gradient, so heat loss will be proportional to the difference between inside and outside temp
 * optimiser.py - algorithm to plan future heating - adds 15 min blocks of heating one-by one until the predicted target temperatures are met
