@@ -48,6 +48,7 @@ Low-quality code beware! Here be dragons, etc.
 * main.py - contains target temperatures for each day
 
 ## Display
+I wanted something functional yet elegant - spent a bit of time layout out the information on paper first to decide what goes where on the display. Had thoughts about including extra information - more detailed weather forecast? pull in the cost from the Smert Meter? Maybe later, but better to leave it relatively uncluttered for now.
 The display indicates:
 * Current indoor temperature
 * Current outdoor temperature
