@@ -250,7 +250,7 @@ class OutputGen:
             offset = self.DotLine(surface, (x, y), (x2, y2), black, offset)
 
 
-        testPredictions = False
+        testPredictions = Talse
         if testPredictions:
             for i in range(nowBlock - 12*4, nowBlock, 4*3):
                 startBlock = i
