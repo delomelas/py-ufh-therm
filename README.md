@@ -63,6 +63,7 @@ i.e, given no other inputs, temperature will trend towards the outside temperatu
   * If so, remove this heating block
 
 ## Configuration
+Config and magic numbers currently spread around a few files:
 * nest.conf - the script expects to find this with details of the Nest API auth keys and bearer tokens
 * heating.py - the heating being on causes a curve in heat output for the following three or so hours, so this attempts to encode that curve
 * predictor.py - contains a heat-loss function, calibrated to my house
