@@ -41,6 +41,26 @@ Low-quality code beware! Here be dragons, etc. This is my first attempt at Pytho
 * mynest.py - wrapper around nest.py to simplify accessing Nest to override the old thermostat
 * nest.conf - not included, contains API keys and bearer tokens for accessing the Google Smart Device management API
 
+## Algorithm
+Time is split into 15 minute "blocks" - to represent the minimum amount of time it's sensible to run the boiler for.
+### Heat loss
+Temperature gradient - (indoor temp at t1) = (outdoor temp at t0 - indoor temp at t0) / (heat loss factor) + indoor temp at t0
+i.e, given no other inputs, temperature will trend towards the outside temperature
+
+### Heat plan generation Psuedocode
+* Predict the next 12h of indoor temperature
+* For each block where the predicted temperature is below the target temperature (a "cold block")
+  * For each block before the cold block (a "potential heating block")
+    * Measure the difference in predicted temperature if heating was applied
+    * Record the best heat increase
+  * If we've found a good candidate, add that potential heating block to the heating plan
+* Repeat until we've got all predicted temperatures above the target temperature or we've run out of possible heating to apply
+### Optimiser
+* For each planned heating block
+  * Try removing the heating block from the plan
+  * Do all predicted temperatures remain above the target temperature?
+  * If so, remove this heating block
+
 ## Configuration
 * nest.conf - the script expects to find this with details of the Nest API auth keys and bearer tokens
 * heating.py - the heating being on causes a curve in heat output for the following three or so hours, so this attempts to encode that curve
