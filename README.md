@@ -25,14 +25,14 @@ Before going too far - note that this is not something I expect other people to 
 # Construction
 ## Hardware
 * Raspberry Pi Zero W - because I had a spare one from years ago
-* InkyWHAT 4 inch e-ink sceen - a low-power display option to show staus - black/white/red only, 400x300 resolution
+* InkyWHAT 4 inch e-ink sceen - a low-power display option to show information - black/white/red only, 400x300 resolution
 * BME280 temperature sensor - cheap and just about accurate enough - it attaches nicely into the breakout pins on the InkyWHAT
 * 3d-printed case - to make sure it looks like a real thing and not a mess of PCBs and breadboards in the corner of the room
 
 ![BME280, InkyWHAT screen an Pi Zero W](images/hardware.jpg?raw=true "All the required hardware")
 
 ## Software
-Low-quality code beware! Here be dragons, etc.
+Low-quality code beware! Here be dragons, etc. This is my first attempt at Python, I accept that it doesn't look very "pythonic" - my coding style is a bit of a mix of Java and K&R C and Basic all mushed together.
 * main.py - entry point. Designed to run as cron-job once every 15 minutes - collects all data, plans the next 12h of heating, switches on or off the boiler, then exits
 * predictor.py - divides the day into 15 minute blocks, predicting the temperature drop for the next 12h. Assume a simple temperature-gradient, so heat loss will be proportional to the difference between inside and outside temp
 * optimiser.py - algorithm to plan future heating - adds 15 min blocks of heating one-by one until the predicted target temperatures are met
@@ -41,13 +41,36 @@ Low-quality code beware! Here be dragons, etc.
 * mynest.py - wrapper around nest.py to simplify accessing Nest to override the old thermostat
 * nest.conf - not included, contains API keys and bearer tokens for accessing the Google Smart Device management API
 
+## Algorithm
+Time is split into 15 minute "blocks" - to represent the minimum amount of time it's sensible to run the boiler for.
+### Heat loss
+Temperature gradient - (indoor temp at t1) = (outdoor temp at t0 - indoor temp at t0) / (heat loss factor) + indoor temp at t0
+
+i.e, given no other inputs, temperature will trend towards the outside temperature
+
+### Heat plan generation Psuedocode
+* Predict the next 12h of indoor temperature
+* For each block where the predicted temperature is below the target temperature (a "cold block")
+  * For each block before the cold block (a "potential heating block")
+    * Measure the difference in predicted temperature if heating was applied
+    * Record the best heat increase
+  * If we've found a good candidate, add that potential heating block to the heating plan
+* Repeat until we've got all predicted temperatures above the target temperature or we've run out of possible heating to apply
+### Optimiser
+* For each planned heating block
+  * Try removing the heating block from the plan
+  * Do all predicted temperatures remain above the target temperature?
+  * If so, remove this heating block
+
 ## Configuration
+Config and magic numbers currently spread around a few files:
 * nest.conf - the script expects to find this with details of the Nest API auth keys and bearer tokens
 * heating.py - the heating being on causes a curve in heat output for the following three or so hours, so this attempts to encode that curve
 * predictor.py - contains a heat-loss function, calibrated to my house
 * main.py - contains target temperatures for each day
 
 ## Display
+I wanted something functional yet elegant - spent a bit of time laying out the information on paper first to decide what goes where on the display. Had thoughts about including extra information - more detailed weather forecast? pull in the cost from the Smert Meter? Maybe later, but better to leave it relatively uncluttered for now.
 The display indicates:
 * Current indoor temperature
 * Current outdoor temperature
@@ -57,9 +80,9 @@ The display indicates:
   * Dotted line in the futre; predicted temperature
   * Red line; target temperature
   * Red Bars - times when the heating is on
-  * Status area in the bottom left, which confirms successful link with the weather API, Nest API and Sensors.
-  * On/Off indicator bottom-middle, at-a-glance view of if the boiler is on or off at the moment
-  * Total heating time over the last 24h, so I can marvel in how efficient it is
+* Status area in the bottom left, which confirms successful link with the weather API, Nest API and Sensors.
+* On/Off indicator bottom-middle, at-a-glance view of if the boiler is on or off at the moment
+* Total heating time over the last 24h, so I can marvel in how efficient it is
 
 ![Thermostat chart](images/display.png?raw=true "Detail view of the output screen")
 
