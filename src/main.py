@@ -26,8 +26,8 @@ maxBlock = None
 
 def SetupTargets():
     # time, temperature pairs
-    setPoint = [[9, 20.0], [17, 20.5], [21, 20.0], [22, 18.0]]
-
+    setPoint = [[9, 19.5], [10, 20.0], [22, 18]]
+    # holidaySetPoint = [[10, 18], [22, 16.0]]
     targets = {}
 
     for t in range(minBlock, maxBlock):
