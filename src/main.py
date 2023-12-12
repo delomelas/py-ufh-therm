@@ -19,6 +19,11 @@ from mynest import Nest
 minBlock = None
 maxBlock = None
 
+# TODO
+# some way to control it...
+# - switch on/off (or at least skip setting the boiler)
+# - set new targets? will need a UI for this
+
 def SetupTargets():
     # time, temperature pairs
     setPoint = [[9, 20.0], [17, 20.5], [21, 20.0], [22, 18.0]]
@@ -73,7 +78,7 @@ outputgen = OutputGen(sensor, weather, plan, predictor, targets, nest)
 
 futureBlocks = 0
 for block in plan.heat.keys():
-    if plan.GetPlannedHeating(block) and block < maxBlock:
+    if plan.GetPlannedHeating(block) and nowBlock <= block < maxBlock:
         futureBlocks = futureBlocks + 1
 
 print("Total heating blocks planned: " + str(futureBlocks))

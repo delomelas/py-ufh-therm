@@ -30,7 +30,7 @@ class Predictor:
             # calculate the effect of outside temperature
             # simple temperature gradient
             # todo: add windchill and effect of solar gains?
-            newTemp = (forecastTemp - prevTemp) / 160 + prevTemp
+            newTemp = (forecastTemp - prevTemp) / 165 + prevTemp
 
             # add the underfloor heating to this block
             newTemp = heating.ApplyHeatingForBlock(block, newTemp)

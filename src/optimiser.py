@@ -53,40 +53,45 @@ class Optimiser:
 
         # for each block predicted to be cold
         for coldBlock in reversed(coldBlocks):
-            # if other heating has fixed this block, we can move on
-            if temps[coldBlock] > targets[coldBlock]:
-                continue
 
-            # now try to find some heating that will maximally heat this cold block
-            bestBlock = -1
-            bestHeatIncrease = 0
+            # search for heating blocks to warm this cold block
+            # prevent adding more than 2 heating blocks for each cold block (ie, don't
+            # go overboard trying to add heating just for one cold block
+            blocksAdded = 0
+            while (temps[coldBlock] < targets[coldBlock] and blocksAdded < 2):
+                # now try to find some heating that will maximally heat this cold block
+                bestBlock = -1
+                bestHeatIncrease = 0
 
-            # test each block that could have an impact on this cold block
-            startSearch = max(nowBlock, coldBlock - heatingPlan.heatImpactBlocks)
+                # test each block that could have an impact on this cold block
+                startSearch = max(nowBlock, coldBlock - heatingPlan.heatImpactBlocks)
 
-            for testBlock in range(startSearch, coldBlock):
-                testHeating = heatingPlan.Clone()
+                for testBlock in range(startSearch, coldBlock):
+                    testHeating = heatingPlan.Clone()
 
-                # if it's already heated, we can move on
-                if testHeating.GetPlannedHeating(testBlock) is True:
-                    continue
+                    # if it's already heated, we can move on
+                    if testHeating.GetPlannedHeating(testBlock) is True:
+                        continue
 
-                testHeating.PutPlannedHeating(testBlock, True)
-                newTemps = predictor.PredictFutureTemps(nowTime, testHeating, maxBlock)
+                    testHeating.PutPlannedHeating(testBlock, True)
+                    newTemps = predictor.PredictFutureTemps(nowTime, testHeating, maxBlock)
 
-                # what difference has this made to the heating?
-                dif = newTemps[coldBlock] - temps[coldBlock]
+                    # what difference has this made to the heating?
+                    dif = newTemps[coldBlock] - temps[coldBlock]
 
-                if dif > bestHeatIncrease:
-                    bestBlock = testBlock
-                    bestHeatIncrease = dif
+                    if dif > bestHeatIncrease:
+                        bestBlock = testBlock
+                        bestHeatIncrease = dif
 
-            # found a block to add, add it
-            if bestBlock >= 0:
-                heatingPlan.PutPlannedHeating(bestBlock, True)
-
-                # update the prediction based on this new plan
-                temps = predictor.PredictFutureTemps(nowTime, heatingPlan, maxBlock)
+                # found a block to add, add it
+                if bestBlock >= 0:
+                    heatingPlan.PutPlannedHeating(bestBlock, True)
+                    # update the prediction based on this new plan
+                    temps = predictor.PredictFutureTemps(nowTime, heatingPlan, maxBlock)
+                    blocksAdded = blocksAdded + 1
+                else:
+                    # stop searching for cold blocks if we didn't manage to find any candidates
+                    break
 
         benchmark2 = time.time()
 
@@ -110,9 +115,29 @@ class Optimiser:
 
         print("Heating optimisation - blocks removed: " + str(removed))
 
-        benchmark3 = time.time()
+        moved = 0
+        optiPlan2 = optiPlan.Clone()
+        for testBlock in range(nowBlock, maxBlock):
+            if optiPlan2.GetPlannedHeating(testBlock) is False:
+                continue
+            temps = predictor.PredictFutureTemps(nowTime, optiPlan2, maxBlock)
+            c1 = self.CountColdBlock(temps, targets, nowBlock, maxBlock)
 
-        print("Heating generation: " + str(benchmark2 - benchmark1))
-        print("Heating optimisation: " + str(benchmark3 - benchmark2))
+            newOptiPlan2 = optiPlan2.Clone()
+            newOptiPlan2.PutPlannedHeating(testBlock, False)
+            # find the first gap to move it to
+            newPos = testBlock + 1
+            while newOptiPlan2.GetPlannedHeating(newPos) == True:
+                newPos = newPos + 1
+            newOptiPlan2.PutPlannedHeating(newPos, True)
+            temp2 = predictor.PredictFutureTemps(nowTime, newOptiPlan2, maxBlock)
+            c2 = self.CountColdBlock(temp2, targets, nowBlock, maxBlock)
+            if c2 <= c1:
+                moved = moved + 1
+                optiPlan2 = newOptiPlan2.Clone()
+        print("Heating optimisation - blocks moved into the future: " + str(moved))
 
-        return optiPlan
+
+
+
+        return optiPlan2

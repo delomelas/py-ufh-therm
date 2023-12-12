@@ -81,6 +81,7 @@ class Weather:
 
     # returns a temperature for a given epoch time
     def GetTempForecast(self, t):
+
         if len(self.forecast) == 0:
             return 0
 

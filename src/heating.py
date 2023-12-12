@@ -11,7 +11,8 @@ class Heating:
 
     heat = {}
 
-    heatImpactBlocks = 13
+    # maximum number of blocks in the past we'll try to heat, ie don't switch on the boiler more than 3 hours before a cold block
+    heatImpactBlocks = 12
 
     def Store(self):
         # when saving; discard anything more than a day old
@@ -49,16 +50,16 @@ class Heating:
             temp = temp + 0.01
 
         if self.GetPlannedHeating(block - 16):
-            temp = temp + 0.02
+            temp = temp + 0.01
 
         if self.GetPlannedHeating(block - 15):
-            temp = temp + 0.02
+            temp = temp + 0.01
 
         if self.GetPlannedHeating(block - 14):
-            temp = temp + 0.03
+            temp = temp + 0.02
 
         if self.GetPlannedHeating(block - 13):
-            temp = temp + 0.03
+            temp = temp + 0.02
 
         if self.GetPlannedHeating(block - 12):
             temp = temp + 0.03
@@ -82,10 +83,10 @@ class Heating:
             temp = temp + 0.07
 
         if self.GetPlannedHeating(block - 5):
-            temp = temp + 0.08
+            temp = temp + 0.1
 
         if self.GetPlannedHeating(block - 4):
-            temp = temp + 0.07
+            temp = temp + 0.08
 
         if self.GetPlannedHeating(block - 3):
             temp = temp + 0.03
