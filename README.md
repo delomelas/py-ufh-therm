@@ -84,7 +84,10 @@ The display indicates:
 * On/Off indicator bottom-middle, at-a-glance view of if the boiler is on or off at the moment
 * Total heating time over the last 24h, so I can marvel in how efficient it is
 
-![Thermostat chart](images/display.png?raw=true "Detail view of the output screen")
+![Thermostat chart](images/display2.png?raw=true "Detail view of the output screen")
+
+## The case
+* 3d printed in two parts from a design I found on THingiverse. Printed well first time, and as I have the Pi attached directly to the screen, I didn't need to make any adjustments to give space for the temperature sensor. There's also plenty of airflow to allow the sensor to get a good reading of the ambient air temp.
 
 ## The finished item
 ![Case open](images/insides.jpg?raw=true "Another view of the case")
